@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>Spotted</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="utf-8">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="HandheldFriendly" content="true" />
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="HandheldFriendly" content="true" />
+	<meta name="robots" content="no index,nofollow" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="apple-mobile-web-app-title" content="Phaser App">
+	<meta name="viewport" content="initial-scale=1 maximum-scale=1 user-scalable=0 minimal-ui" />
+	<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" >
+	<!-- non-retina iPhone pre iOS 7 -->
+	<link rel="apple-touch-icon" sizes="57x57" href="icons/app_icon_57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="icons/app_icon_60x60.png">
+	<!-- non-retina iPad pre iOS 7 -->
+	<link rel="apple-touch-icon" sizes="72x72" href="icons/app_icon_72x72.png">
+	<!-- non-retina iPad iOS 7 -->
+	<link rel="apple-touch-icon" sizes="76x76" href="icons/app_icon_76x76.png">
+	<!-- retina iPhone pre iOS 7 -->
+	<link rel="apple-touch-icon" sizes="114x114" href="icons/app_icon_114x114.png">
+	<!-- retina iPhone iOS 7 -->
+	<link rel="apple-touch-icon" sizes="120x120" href="icons/app_icon_120x120.png">
+	<!-- retina iPad pre iOS 7 -->
+	<link rel="apple-touch-icon" sizes="144x144" href="icons/app_icon_144x144.png">
+	<!-- retina iPad iOS 7 -->
+	<link rel="apple-touch-icon" sizes="152x152" href="icons/app_icon_152x152.png">
+	<link rel="apple-touch-icon" sizes="256x256" href="icons/app_icon_256x256.png">
+	<link rel="apple-touch-icon" sizes="512x512" href="icons/app_icon_512x512.png">
+	<link rel="apple-touch-icon" sizes="1024x1024" href="icons/app_icon_1024x1024.png">
+	<link rel="stylesheet" href="css/stylesheet.css" type="text/css"/>
+	
+	<script src="//html5sdk.galaxy.gs/PSGN.js" data-app_id="8408"></script>
+	<script>
+	    window.addEventListener('DOMContentLoaded', function(){
+	        // The SDK is now available for use
+	       $pp.PSGN.Ui.icon("topleft");  //This handles the Playphone Icon position
+	    }, false);
+	</script>
+	
+	<script src="src/lib/phaser.min.js"></script>
+	<script src="src/lib/ScaleManager2.min.js"></script>
+	<script src="src/game/scene/Boot.min.js"></script>
+	<script src="src/game/scene/Preloader.min.js"></script>
+	<script src="src/game/scene/MainMenu.min.js"></script>
+	<script src="src/game/scene/Instructions.min.js"></script>
+	<script src="src/game/scene/Game.min.js"></script>
+	<script src="src/game/scene/GameOver.min.js"></script>
+	
+</head>
+<body>
+
+	<div id="game"></div>
+	<div id="orientation"></div>
+
+<script type="text/javascript">
+(function () {
+		
+	"use strict";
+	
+	PrimeEight.Spotted.screen = "small";
+	PrimeEight.Spotted.srx = Math.max(window.innerWidth,window.innerHeight);
+	PrimeEight.Spotted.sry = Math.min(window.innerWidth,window.innerHeight);
+
+	PrimeEight.Spotted.logicWidth = 480;
+	PrimeEight.Spotted.logicHeight = 320;
+	var r = PrimeEight.Spotted.logicWidth/PrimeEight.Spotted.logicHeight,
+	pulseWidthMax = 320, // "normal"
+	game,
+	device;
+	
+	function setLarge(pulseWidthMax){
+	
+		PrimeEight.Spotted.screen = "large";
+		PrimeEight.Spotted.gameWidth = 720;
+		PrimeEight.Spotted.pulseWidthMax = pulseWidthMax * 1.5;
+		PrimeEight.Spotted.aphidHeight = 70;
+		PrimeEight.Spotted.ladybirdHeight = 60; 
+		PrimeEight.Spotted.buttonsSoundWidth = 36;
+		PrimeEight.Spotted.buttonsSoundHeight = 36;
+	}
+
+	if(PrimeEight.Spotted.srx >= 360){
+		PrimeEight.Spotted.screen = "small";
+		PrimeEight.Spotted.gameWidth = 360;
+		PrimeEight.Spotted.pulseWidthMax = pulseWidthMax * 0.75;
+		PrimeEight.Spotted.aphidHeight = 35;
+		PrimeEight.Spotted.ladybirdHeight = 30;
+		PrimeEight.Spotted.buttonsSoundWidth = 18;
+		PrimeEight.Spotted.buttonsSoundHeight = 18;
+	}
+	if(PrimeEight.Spotted.srx >= 480){
+		PrimeEight.Spotted.screen = "normal";
+		PrimeEight.Spotted.gameWidth = 480;
+		PrimeEight.Spotted.pulseWidthMax = pulseWidthMax;
+		PrimeEight.Spotted.aphidHeight = 46;
+		PrimeEight.Spotted.ladybirdHeight = 40;
+		PrimeEight.Spotted.buttonsSoundWidth = 24;
+		PrimeEight.Spotted.buttonsSoundHeight = 24;
+	}
+	if(PrimeEight.Spotted.srx >= 720){
+		setLarge(pulseWidthMax);
+	}
+	if(PrimeEight.Spotted.srx >= 960){
+		PrimeEight.Spotted.screen = "xlarge";
+		PrimeEight.Spotted.gameWidth = 960;
+		PrimeEight.Spotted.pulseWidthMax = pulseWidthMax * 2;
+		PrimeEight.Spotted.aphidHeight = 92;
+		PrimeEight.Spotted.ladybirdHeight = 80;
+		PrimeEight.Spotted.buttonsSoundWidth = 48;
+		PrimeEight.Spotted.buttonsSoundHeight = 48;
+	}
+	if(PrimeEight.Spotted.srx >= 1440){
+		PrimeEight.Spotted.screen = "xxlarge";
+		PrimeEight.Spotted.gameWidth = 1440;	
+		PrimeEight.Spotted.pulseWidthMax = pulseWidthMax * 3;
+		PrimeEight.Spotted.aphidHeight = 138;
+		PrimeEight.Spotted.ladybirdHeight = 120;
+		PrimeEight.Spotted.buttonsSoundWidth = 72;
+		PrimeEight.Spotted.buttonsSoundHeight = 72;
+	}
+
+	device = new Phaser.Device();
+	if(device.desktop){
+		PrimeEight.Spotted.desktop = true;
+		PrimeEight.Spotted.desktopScale = 1.5;
+		setLarge(pulseWidthMax);
+	}
+	device = null;
+
+
+	PrimeEight.Spotted.gameHeight = PrimeEight.Spotted.gameWidth/r;
+
+	game = new Phaser.Game(PrimeEight.Spotted.gameWidth,PrimeEight.Spotted.gameHeight, Phaser.AUTO, 'game');
+
+	game.state.add('Boot', PrimeEight.Spotted.Boot);
+	game.state.add('Preloader', PrimeEight.Spotted.Preloader);
+	game.state.add('MainMenu', PrimeEight.Spotted.MainMenu);
+	game.state.add('Instructions', PrimeEight.Spotted.Instructions);
+	game.state.add('Game', PrimeEight.Spotted.Game);
+	game.state.add('GameOver', PrimeEight.Spotted.GameOver);
+
+	game.state.start('Boot');
+
+}());
+</script>
+<!-- Piwik -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//www.primitive.co/piwik/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="//www.primitive.co/piwik/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+</body>
+</html>
